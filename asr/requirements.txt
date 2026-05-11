@@ -5,20 +5,23 @@ fastapi==0.115.12
 uvicorn[standard]==0.34.2
 
 # ── ASR core ──────────────────────────────────────────────────────────────────
-# faster-whisper uses CTranslate2 — significantly faster + lower VRAM than
-# the original OpenAI Whisper at the same accuracy level.
 faster-whisper==1.1.1
 
 # ── Audio I/O ─────────────────────────────────────────────────────────────────
-# soundfile reads WAV/FLAC/OGG via libsndfile (no ffmpeg dependency for WAV).
 soundfile==0.12.1
 
 # ── Numerics ──────────────────────────────────────────────────────────────────
 numpy>=1.24.0,<2.0.0
 
-# ── HTTP (required by faster-whisper internally for model downloads) ──────────
+# ── HTTP (required by faster-whisper for model downloads) ─────────────────────
 requests==2.32.3
 
-# ── Cross-validation / evaluation (run outside the container) ─────────────────
-# Install these locally: pip install jiwer tqdm requests
-# jiwer==3.0.4
+# ── XGBoost meta-selector + hyperparameter tuning ────────────────────────────
+xgboost==2.1.1
+optuna==3.6.1
+scikit-learn==1.5.2
+joblib==1.4.2
+
+# ── Used by train_xgb.py (WER scoring during training) ───────────────────────
+jiwer==3.0.4
+tqdm==4.67.0

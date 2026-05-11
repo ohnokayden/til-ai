@@ -1,14 +1,13 @@
 # ── Base image ────────────────────────────────────────────────────────────────
-# CUDA 12.1 devel + cuDNN 8, Ubuntu 22.04.
+# CUDA 12.4 devel + cuDNN 9, Ubuntu 22.04.
+# Using the current nvidia/cuda image format (non-deprecated).
 # 'devel' is required (not 'runtime') because CTranslate2 dynamically loads
-# libcublas.so.12 and libcublasLt.so.12 at inference time — these are only
-# present in the devel image.
-FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+# libcublas.so.12 and libcublasLt.so.12 at inference time — only in devel.
+FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
 
 # ── Environment ───────────────────────────────────────────────────────────────
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
-    # Store HuggingFace / CTranslate2 model weights at a known path.
     HF_HOME=/models \
     CT2_VERBOSE=1
 
