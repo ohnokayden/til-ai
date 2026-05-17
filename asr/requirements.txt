@@ -1,27 +1,23 @@
-# Dependencies for the ASR container.
-
-# ── Server ────────────────────────────────────────────────────────────────────
+# Server
 fastapi==0.115.12
 uvicorn[standard]==0.34.2
 
-# ── ASR core ──────────────────────────────────────────────────────────────────
+# Whisper
+openai-whisper==20250625
 faster-whisper==1.1.1
+transformers==4.44.0
+accelerate==0.33.0
 
-# ── Audio I/O ─────────────────────────────────────────────────────────────────
+# Audio
 soundfile==0.12.1
+resampy==0.4.3
+noisereduce==3.0.2
+scipy==1.13.1
 
-# ── Numerics ──────────────────────────────────────────────────────────────────
-numpy>=1.24.0,<2.0.0
-
-# ── HTTP (required by faster-whisper for model downloads) ─────────────────────
-requests==2.32.3
-
-# ── XGBoost meta-selector + hyperparameter tuning ────────────────────────────
+# XGBoost
 xgboost==2.1.1
-optuna==3.6.1
-scikit-learn==1.5.2
+scikit-learn==1.5.1
 joblib==1.4.2
 
-# ── Used by train_xgb.py (WER scoring during training) ───────────────────────
+# Eval
 jiwer==3.0.4
-tqdm==4.67.0
