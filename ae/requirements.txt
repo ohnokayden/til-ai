@@ -2,3 +2,8 @@
 
 fastapi
 uvicorn[standard]
+stable-baselines3 
+sb3-contrib
+pettingzoo 
+supersuit
+tensorboard
