@@ -12,8 +12,8 @@ To load the test corpus, the first request sent to your endpoint will be of the 
   "instances": [
     {
       "documents": [
-        "Text of document one.",
-        "Text of document two.",
+        {"id": "DOC-0001", "document": "Text of document one."},
+        {"id": "DOC-0002", "document": "Text of document two."},
         ...
       ]
     }
@@ -25,7 +25,7 @@ This is expected to be parsed by your NLP RAG QA system to be used as context fo
 
 ```JSON
 {
-  "predictions": ["loaded"]
+  "predictions": [{"status": "loaded"}]
 }
 ```
 
@@ -55,13 +55,13 @@ Your route handler function must return a `dict` with this structure:
 ```Python
 {
     "predictions": [
-        "Answer one.",
-        "Answer two.",
+        {"documents": ["DOC-0001", "DOC-0003"], "answer": "Answer one."},
+        {"documents": [], "answer": ""},
         ...
     ]
 }
 ```
 
-where each string in `predictions` is the predicted NLP answer for the corresponding question.
+where each item in `predictions` corresponds to the relevant document IDs and the predicted NLP answer for the corresponding question.
 
 The $k$-th element of `predictions` must be the prediction corresponding to the $k$-th element of `instances` for all $1 \le k \le n$, where n is the number of input instances. The length of `predictions` must equal that of `instances`.
