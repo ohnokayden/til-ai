@@ -1,6 +1,6 @@
 """Manages the AE model."""
 
-
+from sb3_contrib import MaskablePPO
 class AEManager:
 
     def __init__(self):
@@ -22,5 +22,8 @@ class AEManager:
 
         # Your inference code goes here.
         # TODO
-
+        loaded = MaskablePPO.load("./models/best_reward/best_reward_model")
+        obs, _ = BombermanEnv().reset()
+        action, _ = loaded.predict(obs, deterministic=True)
+        return action
         return 0
