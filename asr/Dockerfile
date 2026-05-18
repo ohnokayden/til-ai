@@ -13,10 +13,9 @@ RUN pip install -U pip setuptools
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN python -c "from faster_whisper import WhisperModel; WhisperModel('large-v3', device='cpu', compute_type='float32', download_root='/app/models'); WhisperModel('large-v2', device='cpu', compute_type='float32', download_root='/app/models')"
-
 COPY src .
+RUN python download_models.py
 
-HEALTHCHECK --interval=20s --timeout=15s --start-period=300s --retries=15 CMD curl -f http://localhost:5001/health || exit 1
+HEALTHCHECK --interval=20s --timeout=15s --start-period=600s --retries=20 CMD curl -f http://localhost:5001/health || exit 1
 
 CMD ["uvicorn", "asr_server:app", "--port", "5001", "--host", "0.0.0.0"]

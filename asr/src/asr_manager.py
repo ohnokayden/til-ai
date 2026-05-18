@@ -16,7 +16,7 @@ MODEL_DIR  = "/app/models"
 PRIMARY    = "large-v3"
 SECONDARY  = "large-v2"
 DEVICE     = "cuda"
-COMPUTE    = "int8_float16"
+COMPUTE     = "int8"
 BEAM_SIZE  = 4
 LANGUAGE   = "en"
 XGB_PATH   = "/app/xgb_selector.joblib"
@@ -70,14 +70,16 @@ class ASRManager:
             download_root=MODEL_DIR, num_workers=2,
         )
 
-        self.xgb = None
+        self.xgb     = None
+        self.xgb_iso = None
         if os.path.exists(XGB_PATH):
             try:
-                import joblib, sys
-                # Make CalibratedModel findable by joblib unpickler
-                sys.modules[__name__].CalibratedModel = CalibratedModel
-                payload = joblib.load(XGB_PATH)
-                self.xgb = payload["model"] if isinstance(payload, dict) else payload
+                import joblib
+                payload          = joblib.load(XGB_PATH)
+                self.xgb         = payload["xgb_model"]
+                self.xgb_iso     = payload["iso"]
+                global XGB_THRESH
+                XGB_THRESH       = payload.get("threshold", XGB_THRESH)
                 logger.info("XGBoost loaded. Threshold=%.2f", XGB_THRESH)
             except Exception as e:
                 logger.warning("XGBoost load failed: %s — using logprob fallback", e)
@@ -124,7 +126,8 @@ class ASRManager:
         if self.xgb is not None:
             delta    = p_feat - s_feat
             combined = np.concatenate([p_feat, s_feat, delta])[np.newaxis, :]
-            prob     = float(self.xgb.predict_proba(combined)[0][1])
+            raw_prob = float(self.xgb.predict_proba(combined)[0][1])
+            prob     = float(self.xgb_iso.predict([raw_prob])[0]) if self.xgb_iso else raw_prob
             use_primary = prob >= 0.5
             confident   = max(prob, 1 - prob) >= XGB_THRESH
             if confident:
