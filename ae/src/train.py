@@ -2,7 +2,6 @@ import gymnasium as gym
 import numpy as np
 from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.env_util import make_vec_env, VecNormalize
-from stable_baselines3.common.callbacks import EvalCallback
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.wrappers import ActionMasker
 from til_environment.bomberman_env import Bomberman
@@ -88,6 +87,9 @@ vec_env = VecNormalize(vec_env, norm_obs=False, norm_reward=True, clip_reward=10
 
 
 # ── 5. Create the MaskablePPO model ─────────────────────────────────
+def lr_schedule(progress):  # progress goes 1.0 → 0.0 during training
+    return 3e-4 * progress  # linearly decay to 0
+\
 model = MaskablePPO(
     policy="MlpPolicy",
     env=vec_env,
@@ -97,9 +99,9 @@ model = MaskablePPO(
     gamma=0.99,
     gae_lambda=0.95,
     clip_range=0.2,
-    ent_coef=0.01,        # small entropy bonus for exploration
-    learning_rate=3e-4,
-    policy_kwargs=dict(net_arch=[256, 256]),  # wider network for complex obs
+    ent_coef=0.003,        # small entropy bonus for exploration
+    learning_rate=lr_schedule(),
+    policy_kwargs=dict(net_arch=dict(pi=[256, 256], vf=[512, 512])),  # wider network for complex obs
     verbose=1,
     tensorboard_log="./ae_logs/"
 )
