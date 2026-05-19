@@ -24,7 +24,7 @@ class AEManager:
 
         # Your inference code goes here.
         # TODO
-        loaded = MaskablePPO.load("./models/best_reward/best_reward_model")
+        loaded = MaskablePPO.load("../models/best_reward/best_reward_model")
         obs, _ = BombermanEnv().reset()
         action, _ = loaded.predict(obs, deterministic=True)
         return action

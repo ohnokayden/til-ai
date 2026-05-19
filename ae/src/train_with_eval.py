@@ -346,23 +346,23 @@ if __name__ == "__main__":
     # def lr_schedule(progress_remaining):
     #     return 3e-4 * progress_remaining
     
-    # model = MaskablePPO.load("./models/best_reward/best_reward_model.zip", env = vec_env, learning_rate=3e-5, force_reset=True,) 
-    model = MaskablePPO(
-        policy="MlpPolicy",
-        env=vec_env,
-        n_steps=8192,
-        batch_size=1024,
-        n_epochs=10,
-        gamma=0.99,
-        gae_lambda=0.95,
-        clip_range=0.2,
-        ent_coef=0.003,
-        device="cpu",
-        learning_rate=3e-5,
-        policy_kwargs=dict(net_arch=dict(pi=[256, 256], vf=[512, 512])),
-        verbose=1,
-        tensorboard_log="./ae_logs/",
-    )
+    model = MaskablePPO.load("../models/best_reward/best_reward_model.zip", env = vec_env, force_reset=True,) 
+    # model = MaskablePPO(
+    #     policy="MlpPolicy",
+    #     env=vec_env,
+    #     n_steps=8192,
+    #     batch_size=1024,
+    #     n_epochs=10,
+    #     gamma=0.99,
+    #     gae_lambda=0.95,
+    #     clip_range=0.2,
+    #     ent_coef=0.003,
+    #     device="cpu",
+    #     learning_rate=3e-5,
+    #     policy_kwargs=dict(net_arch=dict(pi=[256, 256], vf=[512, 512])),
+    #     verbose=1,
+    #     tensorboard_log="./ae_logs/",
+    # )
     
     # Eval callback — uses a fresh (non-normalised) env for evaluation
     # so reward values are interpretable in the original scale
@@ -370,8 +370,8 @@ if __name__ == "__main__":
         eval_env_fn=make_env,            # fresh env, no VecNormalize
         eval_freq=10_000,
         n_eval_episodes=10,
-        best_model_save_path="./models/best_reward",
-        combat_model_save_path="./models/best_combat",
+        best_model_save_path="../models/best_reward",
+        combat_model_save_path="../models/best_combat",
         log_path="./ae_logs/eval_results.csv",
         plateau_patience=10,             # warn after 10 evals with no improvement
         anneal_entropy_on_plateau=True,  # automatically halve ent_coef on plateau
