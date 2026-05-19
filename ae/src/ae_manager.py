@@ -1,6 +1,8 @@
 """Manages the AE model."""
 
 from sb3_contrib import MaskablePPO
+from my_wrapper import BombermanEnv
+
 class AEManager:
 
     def __init__(self):
@@ -26,4 +28,3 @@ class AEManager:
         obs, _ = BombermanEnv().reset()
         action, _ = loaded.predict(obs, deterministic=True)
         return action
-        return 0
