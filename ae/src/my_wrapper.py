@@ -18,7 +18,7 @@ cfg = OmegaConf.merge(cfg, {
 
 
 class BombermanEnv(gym.Env):
-    metadata = {"render_modes": []}
+    metadata = {"render_modes": ["human","rgb_array"]}
 
     def __init__(self, cfg=None):
         self.cfg = cfg
