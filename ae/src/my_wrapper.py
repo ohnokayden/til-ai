@@ -21,7 +21,7 @@ class BombermanEnv(gym.Env):
     metadata = {"render_modes": []}
 
     def __init__(self, cfg=None):
-        self.cfg = cfg or default_config()
+        self.cfg = cfg
         self._env = Bomberman(self.cfg)
         self.controlled = "agent_0"
         raw_space = self._env.observation_space(self.controlled)

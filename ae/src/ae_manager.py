@@ -1,14 +1,14 @@
 """Manages the AE model."""
-
-from sb3_contrib import MaskablePPO
 from my_wrapper import BombermanEnv
+from sb3_contrib import MaskablePPO
 
 class AEManager:
 
     def __init__(self):
         # This is where you can initialize your model and any static configurations.
         # TODO
-        pass
+        self.model = MaskablePPO.load("best_reward/best_reward_model")
+        
 
     def ae(self, observation: dict[str, int | list[int]]) -> int:
         """Gets the next action for the agent, based on the observation.
@@ -23,8 +23,7 @@ class AEManager:
         """
 
         # Your inference code goes here.
-        # TODO
-        loaded = MaskablePPO.load("../models/best_reward/best_reward_model")
+        # TOD:
         obs, _ = BombermanEnv().reset()
-        action, _ = loaded.predict(obs, deterministic=True)
-        return action
+        action, _ = self.model.predict(obs, deterministic=True)
+        return int(action)
