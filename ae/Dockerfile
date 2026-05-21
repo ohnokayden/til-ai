@@ -14,10 +14,16 @@ WORKDIR /workspace
 # Installs your dependencies.
 RUN pip install -U pip
 COPY requirements.txt .
+COPY til-26-ae ./til-26-ae
+
+
+RUN pip install --no-cache-dir -e til-26-ae
 RUN pip install --no-cache-dir -r requirements.txt
+
 
 # Copies your source files.
 COPY src .
+COPY models .
 
 # Starts your model server.
 CMD uvicorn ae_server:app --port 5005 --host 0.0.0.0
