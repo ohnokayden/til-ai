@@ -1,6 +1,9 @@
 """Manages the AE model."""
-from my_wrapper import BombermanEnv
+# from my_wrapper import BombermanEnv
 from sb3_contrib import MaskablePPO
+from til_environment.bomberman_env import Bomberman
+import gymnasium as gym
+from gymnasium.spaces import utils
 
 class AEManager:
 
@@ -24,6 +27,8 @@ class AEManager:
 
         # Your inference code goes here.
         # TOD:
-        obs, _ = BombermanEnv().reset()
-        action, _ = self.model.predict(obs, deterministic=True)
+        env = Bomberman()
+        mask = observation["action_mask"]
+        obs = utils.flatten(env.observation_space(), observation)
+        action, _ = self.model.predict(obs, action_masks=mask, deterministic=True)
         return int(action)

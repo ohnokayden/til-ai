@@ -27,8 +27,9 @@ async def ae(request: Request) -> dict[str, list[dict[str, int]]]:
         observation = instance["observation"]
         # reset environment on a new round
         # You will have to do your own internal counting and reset your own system between rounds!
-        # if observation["step"] == 0:
+        if observation["step"] == 0:
             # do internal resetting here
+            AEManager()
         predictions.append({"action": manager.ae(observation)})
     return {"predictions": predictions}
 
