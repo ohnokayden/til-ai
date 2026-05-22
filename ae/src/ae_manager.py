@@ -28,6 +28,7 @@ class AEManager:
         # Your inference code goes here.
         # TOD:
         env = Bomberman()
+        env = frame_stack_v2(env, stack_size=4, stack_dim=-1)
         mask = observation["action_mask"]
         obs = utils.flatten(env.observation_space(), observation)
         action, _ = self.model.predict(obs, action_masks=mask, deterministic=True)
