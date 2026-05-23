@@ -3,3 +3,12 @@
 fastapi==0.115.12
 uvicorn[standard]==0.34.2
 asyncio
+llama-index-core
+llama_index.llms.ollama
+llama_index.vector_stores.chroma
+llama_index.embeddings.huggingface
+llama-index-readers-file
+llama_index.llms.ollama
+llama_index.vector_stores.chroma
+chromadb
+sentence-transformers
